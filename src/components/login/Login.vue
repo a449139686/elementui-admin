@@ -64,7 +64,7 @@
                     if (valid) {
                         var formData = JSON.parse(JSON.stringify(self.ruleForm));
                         formData.password = md5(formData.password + ApiSignKey);
-                        self.postData('/adminApi/adminBase/login', formData, function (res) {
+                        self.postData('/adminApi/admin_base/login', formData, function (res) {
                             console.log(res);
                             if (res.code == 1) {
                                 localStorage.setItem('token', res.data.token);

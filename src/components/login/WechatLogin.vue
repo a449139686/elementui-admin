@@ -37,7 +37,7 @@
                     self.postData('https://wechat.zhoujianjun.cn/getAuth', {authKey: self.wechat.authKey}, function (res) {
                         if (res.code == 1) {
                             self.wechatDialogCallback();
-                            self.postData('/adminApi/adminBase/authLogin', {wechatToken:res.data.token}, function (res) {
+                            self.postData('/adminApi/admin_base/authLogin', {wechatToken:res.data.token}, function (res) {
                                 if (res.code == 1) {
                                     self.wechat.modal = false;
                                     localStorage.setItem('token', res.data.token);

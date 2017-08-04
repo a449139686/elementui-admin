@@ -73,7 +73,7 @@
                     if (valid) {
                         var formData = JSON.parse(JSON.stringify(self.registerForm));
                         formData.password = md5(formData.password + ApiSignKey);
-                        self.postData('/adminApi/adminBase/register', formData, function (res) {
+                        self.postData('/adminApi/admin_base/register', formData, function (res) {
                             if (res.code == 1) {
                                 self.registerForm.modal = false;
                                 localStorage.setItem('token', res.data.token);
