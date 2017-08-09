@@ -34,6 +34,9 @@
         components: {
             VRegister, VWechatLogin
         },
+        created(){
+            console.log(this.$store.state.menuData);
+        },
         data: function () {
             return {
                 ruleForm: {

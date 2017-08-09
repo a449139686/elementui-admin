@@ -22,7 +22,8 @@
         "vue-simplemde": "0.3.8",
         "vue-resource": "*",
         "jquery": "*",
-        "md5": "*"
+        "md5": "*",
+        "vuex":"*"
     },
     "devDependencies": {
         "autoprefixer": "^6.7.2",

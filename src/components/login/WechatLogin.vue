@@ -64,6 +64,9 @@
                 };
                 setTimeout(function () {
                     self.wechat.taskId.push(window.setInterval(getAuthStatus, 3000));
+                        setTimeout(function () {
+                            self.wechatDialogCallback();
+                        },90000);
                 }, 10000);
                 setTimeout(function () {
                     self.wechat.reload = false;

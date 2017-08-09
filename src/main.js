@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from './store/store';
 import App from './App';
 import router from './router';
 import VueResource from 'vue-resource';
@@ -16,7 +17,9 @@ Vue.use(Request);
 Vue.http.options.emulateJSON = true;
 
 global.VueEvent = new Vue();
+
 new Vue({
     router,
+    store,
     render: h => h(App)
 }).$mount('#app');
