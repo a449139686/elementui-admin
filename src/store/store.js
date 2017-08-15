@@ -9,8 +9,8 @@ Vue.use(Vuex);
 
 const state = {
     count:0,
-    menuData:Menu.menu_list
-
+    menuData:Menu.menu_list,
+    adminInfo:{},
 };
 
 const mutations = {

@@ -6,7 +6,7 @@ export default{
         Vue.prototype.postData = function (url, data, successCall) {
             console.log(url);
             if(!this.isUrl(url)){
-                url = ApiUrl + url;
+                url = ApiUrl.baseUlr + url;
             }
             console.log(url);
 
@@ -68,6 +68,7 @@ export default{
                 VueEvent.$message.error('哎呀，服务器好像崩溃了');
             });
         };
+        /** 怕判路由是否是HTTP OR HTTPS链接 */
         Vue.prototype.isUrl = function (str) {
             if(str != ""){
                 var reg=/(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
@@ -77,6 +78,22 @@ export default{
                     return true;
                 }
             }
+        };
+
+        /** 根据管理员的token获取管理员的信息 */
+        Vue.prototype.getAdminByToken = function (callback) {
+            var self = this;
+            this.postData(ApiUrl.authCeck,{},function(res){
+              self.$store.state.adminInfo = res.data;
+              localStorage.setItem('adminInfo', JSON.stringify(res.data));
+            });
+        };
+
+        /** 用户退出登录操作 */
+        Vue.prototype.loginOut = function () {
+            localStorage.removeItem('token');
+            localStorage.removeItem('adminInfo');
+            this.$router.push('/login');
         }
     }
 }

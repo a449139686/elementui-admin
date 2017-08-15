@@ -67,10 +67,11 @@
                     if (valid) {
                         var formData = JSON.parse(JSON.stringify(self.ruleForm));
                         formData.password = md5(formData.password + ApiSignKey);
-                        self.postData('/adminApi/admin_base/login', formData, function (res) {
+                        self.postData(ApiUrl.login, formData, function (res) {
                             console.log(res);
                             if (res.code == 1) {
                                 localStorage.setItem('token', res.data.token);
+                                self.getAdminByToken();
                                 self.$message({
                                     message: '登录成功，即将跳转页面...',
                                     type: 'success',

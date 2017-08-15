@@ -73,10 +73,11 @@
                     if (valid) {
                         var formData = JSON.parse(JSON.stringify(self.registerForm));
                         formData.password = md5(formData.password + ApiSignKey);
-                        self.postData('/adminApi/admin_base/register', formData, function (res) {
+                        self.postData(ApiUrl.register, formData, function (res) {
                             if (res.code == 1) {
                                 self.registerForm.modal = false;
                                 localStorage.setItem('token', res.data.token);
+                                self.getAdminByToken();
                                 self.$message({
                                     message: '注册成功，即将跳转页面...',
                                     type: 'success',

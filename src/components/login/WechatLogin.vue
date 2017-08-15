@@ -37,10 +37,11 @@
                     self.postData('https://wechat.zhoujianjun.cn/getAuth', {authKey: self.wechat.authKey}, function (res) {
                         if (res.code == 1) {
                             self.wechatDialogCallback();
-                            self.postData('/adminApi/admin_base/authLogin', {wechatToken:res.data.token}, function (res) {
+                            self.postData(ApiUrl.authLogin, {wechatToken:res.data.token}, function (res) {
                                 if (res.code == 1) {
                                     self.wechat.modal = false;
                                     localStorage.setItem('token', res.data.token);
+                                    self.getAdminByToken();
                                     self.$message({
                                         message:'扫码登录成功，即将跳转页面...',
                                         type:'success',
