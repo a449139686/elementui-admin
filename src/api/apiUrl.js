@@ -2,9 +2,9 @@ global.ApiUrl = {};
 
 global.ApiSignKey = 'vue-admin@#!';
 
-global.ApiUrl.baseUlr = 'http://admin.phalcon.com';
+//global.ApiUrl.baseUlr = 'http://admin.phalcon.com';
 
-//global.ApiUrl.baseUlr = 'https://admin.fastgoo.net';
+global.ApiUrl.baseUlr = 'https://admin.fastgoo.net';
 
 /** 微信扫描登录授权接口 */
 global.ApiUrl.authLogin = '/admin.api/admin_base/authLogin';
