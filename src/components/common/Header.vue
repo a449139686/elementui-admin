@@ -45,7 +45,7 @@ export default {
                     this.loginOut();
                     break;
                 case 'editInfo':
-                    this.$refs.setPassword.modal = true;
+                    this.$refs.setPassword.form.modal = true;
             }
         }
     }
