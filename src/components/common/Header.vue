@@ -4,7 +4,7 @@
     <div class="user-info">
         <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link">
-                    <img class="user-logo" :src="adminInfo.head_img">
+                    <img class="user-logo" :src="!adminInfo.head_img?'../../../static/img/head_img.jpg':adminInfo.head_img">
                     {{adminInfo.nickname}}
                 </span>
             <el-dropdown-menu slot="dropdown">
@@ -22,21 +22,18 @@ export default {
     components: {
         SetPassword
     },
-    created(){
+    created() {
 
     },
 
     data() {
         return {
             name: 'linxin',
-            adminInfo: localStorage.getItem('adminInfo')?JSON.parse(localStorage.getItem('adminInfo')):{},
+            adminInfo: localStorage.getItem('adminInfo') ? JSON.parse(localStorage.getItem('adminInfo')) : {},
         }
     },
     computed: {
-        username() {
-            let username = localStorage.getItem('ms_username');
-            return username ? username : this.name;
-        }
+
     },
     methods: {
         handleCommand(command) {
