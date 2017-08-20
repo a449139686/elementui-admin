@@ -1,7 +1,7 @@
 
 //var wsServer = 'ws://172.28.128.5:9502';
 
-var wsServer = 'ws://118.89.159.190:9502';
+var wsServer = 'wss://118.89.159.190:9502';
 
 global.websocket = new WebSocket(wsServer);
 
