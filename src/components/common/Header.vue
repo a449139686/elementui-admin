@@ -28,7 +28,6 @@ export default {
 
     data() {
         return {
-            name: 'linxin',
             adminInfo: localStorage.getItem('adminInfo') ? JSON.parse(localStorage.getItem('adminInfo')) : {},
         }
     },

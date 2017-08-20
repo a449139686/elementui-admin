@@ -52,6 +52,6 @@ export const menu_list = [{
     title: '测试表格'
 }, {
     icon: 'el-icon-upload2',
-    index: 'commonsearch',
-    title: '测试搜索'
+    index: 'robotserver',
+    title: '微信机器人'
 }];

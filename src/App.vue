@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
-        <router-view></router-view>
-    </div>
+<div id="app">
+    <router-view></router-view>
+</div>
 </template>
 <script>
 export default {
@@ -9,22 +9,22 @@ export default {
     watch: {
         "$route": 'checkLogin',
     },
-    created(){
+    created() {
 
     },
     methods: {
-        checkLogin(){
-            
-        }
+        checkLogin() {
+
+        },
     }
 };
-
-
-
 </script>
 <style>
-    @import "../static/css/main.css";
-    @import "../static/css/color-dark.css";     /*深色主题*/
-    /*@import "../static/css/theme-green/color-green.css";   浅绿色主题*/
+@import "../static/css/main.css";
+@import "../static/css/color-dark.css";
 
+/*深色主题*/
+
+
+/*@import "../static/css/theme-green/color-green.css";   浅绿色主题*/
 </style>

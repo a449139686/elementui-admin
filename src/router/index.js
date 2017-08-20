@@ -54,9 +54,9 @@ export default new Router({
                     component: resolve => require(['../components/table/Table.vue'], resolve)    // 测试表
                 },
                 {
-                    path: '/commonsearch',
-                    component: resolve => require(['../components/table/Search.vue'], resolve)    // 测试搜索
-                }
+                    path: '/robotserver',
+                    component: resolve => require(['../components/robot/start/server.vue'], resolve)    // 测试服务
+                },
             ]
         },
         {

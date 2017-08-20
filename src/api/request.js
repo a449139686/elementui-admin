@@ -95,5 +95,16 @@ export default{
             localStorage.removeItem('adminInfo');
             this.$router.push('/login');
         }
+
+        /** 用户发送socket操作操作 */
+        Vue.prototype.wsSend = function (data) {
+            var ret = {
+              head:{
+                token:localStorage.getItem('token')
+              },
+              body:data
+            }
+            websocket.send(JSON.stringify(ret));
+        }
     }
 }
