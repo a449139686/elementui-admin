@@ -1,5 +1,5 @@
 
-//var wsServer = 'ws://172.28.128.5:9502';
+//var wsServer = 'ws://39.108.134.88:9502';
 
 var wsServer = 'wss://blog.fastgoo.net/wss';
 
@@ -13,8 +13,12 @@ websocket.closeCallback = function(){
 
 }
 
+websocket.messageCallback = function(){
+
+}
+
 websocket.onopen = function(evt) {
-  console.log('连接websocket服务器成功:'.evt.data);
+  console.log('连接websocket服务器成功:'+evt.data);
     websocket.connectCallback(evt.data);
 };
 
