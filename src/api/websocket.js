@@ -1,12 +1,14 @@
 
-//var wsServer = 'ws://39.108.134.88:9502';
+var wsServer = 'ws://39.108.134.88:9502';
 
-var wsServer = 'wss://blog.fastgoo.net/wss';
+//var wsServer = 'wss://blog.fastgoo.net/wss';
 
 global.websocket = new WebSocket(wsServer);
 
 websocket.connectCallback = function(){
-
+    setInterval(function(){
+      VueEvent.wsSend({type:'ping'});
+    },30000);
 }
 
 websocket.closeCallback = function(){

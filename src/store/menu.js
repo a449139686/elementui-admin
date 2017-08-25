@@ -5,7 +5,7 @@
 export const menu_list = [{
     icon: 'el-icon-setting',
     index: 'readme',
-    title: '自述'
+    title: '项目简介'
 }, {
     icon: 'el-icon-menu',
     index: '2',

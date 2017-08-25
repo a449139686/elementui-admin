@@ -8,19 +8,23 @@
                     {{adminInfo.nickname}}
                 </span>
             <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="realnameVerify" style="margin-top: 5px;">实名认证</el-dropdown-item>
                 <el-dropdown-item command="editInfo" style="margin-top: 5px;">修改密码</el-dropdown-item>
                 <el-dropdown-item command="loginout" style="margin-top: 5px;">退出登录</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
     </div>
     <set-password ref="setPassword"></set-password>
+    <realname-verify ref="realnameVerify"></realname-verify>
 </div>
 </template>
 <script>
 import SetPassword from './SetPassword.vue';
+import RealnameVerify from './realnameVerify.vue';
 export default {
     components: {
-        SetPassword
+        SetPassword,
+        RealnameVerify
     },
     created() {
 
@@ -37,11 +41,16 @@ export default {
     methods: {
         handleCommand(command) {
             switch (command) {
-                case 'loginout':
+                case 'loginout': //退出登录
                     this.loginOut();
                     break;
-                case 'editInfo':
+
+                case 'editInfo': //修改密码
                     this.$refs.setPassword.form.modal = true;
+                    break;
+                case "realnameVerify": //实名认证
+                    this.$refs.realnameVerify.form.modal = true;
+                    break;
             }
         }
     }

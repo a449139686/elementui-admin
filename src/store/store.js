@@ -11,6 +11,13 @@ const state = {
     count:0,
     menuData:Menu.menu_list,
     adminInfo:{},
+    breadcrumb:[{
+      icon:'',
+      name:''
+    },{
+      icon:'',
+      name:''
+    }],
 };
 
 const mutations = {
