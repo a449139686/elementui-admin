@@ -16,3 +16,5 @@ global.ApiUrl.login = '/admin.api/admin_base/login';
 global.ApiUrl.authCeck = '/admin.api/admin_base/authCheck';
 /** 修改管理员密码接口 */
 global.ApiUrl.updatePassword = '/admin.api/admin_base/updatePassword';
+
+global.ApiUrl.uploadFile = '/public/upload/file';
