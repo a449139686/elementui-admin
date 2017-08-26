@@ -8,6 +8,28 @@ export const menu_list = [{
     title: '项目简介'
 }, {
     icon: 'el-icon-menu',
+    index: '100',
+    title: '好友设置',
+    subs: [{
+        index: 'friendRequest',
+        icon: 'el-icon-setting',
+        title: '好友申请'
+    }, {
+        index: 'friendCommand',
+        icon: 'el-icon-setting',
+        title: '私聊指令'
+    }]
+},{
+    icon: 'el-icon-menu',
+    index: '200',
+    title: '群组设置',
+    subs: [{
+        index: 'groupList',
+        icon: 'el-icon-setting',
+        title: '群组列表'
+    }]
+},{
+    icon: 'el-icon-menu',
     index: '2',
     title: '表格',
     subs: [{
