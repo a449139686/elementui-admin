@@ -5,7 +5,7 @@
         <v-search :SearchData="searchData"></v-search>
     </div>
     <!--表格信息-->
-    <el-table :data="data" border style="width: 100%;" @cell-dblclick="tableDoubleClick" :highlight-current-row="true" v-loading.body="tableLoading" element-loading-text="拼命加载中">
+    <el-table :data="data.items" border style="width: 100%;" @cell-dblclick="tableDoubleClick" :highlight-current-row="true" v-loading.body="tableLoading" element-loading-text="拼命加载中">
         <el-table-column type="expand" v-if="tableDetail">
             <template scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -33,8 +33,9 @@
         </template>
         </el-table-column>
     </el-table>
-    <div class="pagination" v-show="data.length > 0">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[20, 40, 50, 100]" :page-size="20" layout="total, sizes, prev, pager, next, jumper" :total="400">
+    <div class="pagination" v-show="data.total_items > 0">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="searchParam.page_size" :current-page="searchParam.page" :page-sizes="[15, 30, 50, 100]" :page-count="data.total_pages" layout="total, sizes, prev, pager, next, jumper"
+          :total="data.total_items">
         </el-pagination>
     </div>
 </div>
@@ -107,16 +108,28 @@ export default {
         VOperate
     },
     created() {
-        console.log(this.data.length);
+        var self = this;
         VueEvent.$on('searchTable', function(searchData) {
-            console.log(searchData);
+            self.searchParam.search_time = searchData.searchDate;
+            self.searchParam.status = searchData.status;
+            self.searchParam.search_type = searchData.searchType;
+            self.searchParam.search_val = searchData.searchVal;
+            console.log(self.searchParam);
+            self.getLists(self.searchParam);
         });
         VueEvent.$on('tableOperateEdit', function(operateData) {
-            console.log(operateData);
+            VueEvent.$emit('editSet', operateData);
         });
         VueEvent.$on('tableOperateDelete', function(operateData) {
-            console.log(operateData);
+            self.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                self.deleteRow(operateData);
+            }).catch(() => {});
         });
+        this.getLists(this.searchParam);
     },
     data() {
         return {
@@ -124,29 +137,70 @@ export default {
                 edit: true,
                 delete: true,
             },
-            data: [],
-            cur_page: 1,
-            tableLoading: false
+            data: {},
+            tableLoading: true,
+            searchParam: {
+                page: 1,
+                page_size: 15,
+            },
         }
     },
     computed: {
 
     },
     methods: {
-        setSearchData(searchData) {
-            this.searchData = searchData;
-        },
         tableDoubleClick() {
             alert(1);
         },
+        sortChangeHandle(column, prop, order) {
+            console.log(column, prop, order);
+            //this.searchParam.order_by = order == 'ascending' ? prop + ' asc' : prop + ' desc';
+            //this.getLists(this.searchParam);
+        },
         /** 分页栏 */
         handleSizeChange(pageSize) {
-            console.log(pageSize);
+            this.searchParam.page_size = pageSize;
+            this.tableLoading = true;
+            this.getLists(this.searchParam);
         },
 
         handleCurrentChange(val) {
-            this.cur_page = val;
-            this.getData();
+            this.searchParam.page = val;
+            this.tableLoading = true;
+            this.getLists(this.searchParam);
+        },
+        getLists(search) {
+            var self = this;
+            self.postData(ApiUrl.friendCommandList, search, function(res) {
+                if (res.code == 1) {
+                    self.data = res.data;
+                    self.tableLoading = false;
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
+        },
+        deleteRow(data) {
+            var self = this;
+            self.postData(ApiUrl.friendCommandDelete, data, function(res) {
+                if (res.code == 1) {
+                    self.$message({
+                        message: '删除成功，即将刷新页面',
+                        type: 'success',
+                        onClose: function() {
+                            self.getLists(self.searchParam);
+                        }
+                    });
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
         }
     }
 }

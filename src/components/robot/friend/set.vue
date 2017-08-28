@@ -13,8 +13,8 @@
         <el-form-item prop="status" label="是否开启" style="margin-top:30px;">
             <el-switch on-text="" off-text="" v-model="form.status"></el-switch>
         </el-form-item>
-        <el-form-item prop="welcome_msg" label="回复内容" style="margin-top:30px;">
-            <el-input type="textarea" v-model="form.welcome_msg" style="width: 250px;height:70px;"></el-input>
+        <el-form-item prop="reply" label="回复内容" style="margin-top:30px;">
+            <el-input type="textarea" v-model="form.reply" style="width: 250px;height:70px;"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="handleOnSubmit" style="width:100px;">立即创建</el-button>
@@ -54,28 +54,29 @@ export default {
                 reply: '',
             },
             rules: {
-                auth_key: [{
+                command: [{
                     required: true,
-                    message: '请输入认证备注',
+                    message: '请输入指令名称',
+                    trigger: 'blur'
+                }],
+                reply: [{
+                    required: true,
+                    message: '请输入回复内容',
+                    trigger: 'blur'
+                }],
+                type: [{
+                    required: true,
+                    message: '请选择类型',
                     trigger: 'blur'
                 }],
             },
             formLabelWidth: '80px',
             options: [{
-                value: '选项1',
-                label: '黄金糕'
+                value: '1',
+                label: '文字'
             }, {
-                value: '选项2',
-                label: '双皮奶'
-            }, {
-                value: '选项3',
-                label: '蚵仔煎'
-            }, {
-                value: '选项4',
-                label: '龙须面'
-            }, {
-                value: '选项5',
-                label: '北京烤鸭'
+                value: '2',
+                label: '图片'
             }],
         }
     },

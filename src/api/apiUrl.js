@@ -27,3 +27,10 @@ global.ApiUrl.friendRequestList = '/admin.api/friend_request/lists';
 global.ApiUrl.friendRequestAdd = '/admin.api/friend_request/add';
 /* 好友申请设置删除 */
 global.ApiUrl.friendRequestDelete = '/admin.api/friend_request/delete';
+
+/* 好友指令列表 */
+global.ApiUrl.friendCommandList = '/admin.api/friend_command/lists';
+/* 好友指令添加 */
+global.ApiUrl.friendCommandAdd = '/admin.api/friend_command/add';
+/* 好友指令删除 */
+global.ApiUrl.friendCommandDelete = '/admin.api/friend_command/delete';

@@ -5,7 +5,7 @@
         <v-search :SearchData="searchData"></v-search>
     </div>
     <!--表格信息-->
-    <el-table :data="data.items" border style="width: 100%;" @cell-dblclick="tableDoubleClick" :highlight-current-row="true" v-loading.body="tableLoading" element-loading-text="拼命加载中">
+    <el-table :data="data.items" border @sort-change="sortChangeHandle" style="width: 100%;" @cell-dblclick="tableDoubleClick" :highlight-current-row="true" v-loading.body="tableLoading" element-loading-text="拼命加载中">
         <el-table-column type="expand" v-if="tableDetail">
             <template scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -100,10 +100,16 @@ export default {
             self.getLists(self.searchParam);
         });
         VueEvent.$on('tableOperateEdit', function(operateData) {
-            console.log(operateData);
+            VueEvent.$emit('editSet', operateData);
         });
         VueEvent.$on('tableOperateDelete', function(operateData) {
-            console.log(operateData);
+            self.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                self.deleteRow(operateData);
+            }).catch(() => {});
         });
         this.getLists(this.searchParam);
     },
@@ -117,7 +123,7 @@ export default {
             tableLoading: true,
             searchParam: {
                 page: 1,
-                page_size: 1,
+                page_size: 15,
             },
         }
     },
@@ -127,6 +133,11 @@ export default {
     methods: {
         tableDoubleClick() {
             alert(1);
+        },
+        sortChangeHandle(column, prop, order) {
+            console.log(column, prop, order);
+            //this.searchParam.order_by = order == 'ascending' ? prop + ' asc' : prop + ' desc';
+            //this.getLists(this.searchParam);
         },
         /** 分页栏 */
         handleSizeChange(pageSize) {
@@ -154,6 +165,25 @@ export default {
                 }
             });
         },
+        deleteRow(data) {
+            var self = this;
+            self.postData(ApiUrl.friendRequestDelete, data, function(res) {
+                if (res.code == 1) {
+                    self.$message({
+                        message: '删除成功，即将刷新页面',
+                        type: 'success',
+                        onClose: function() {
+                            self.getLists(self.searchParam);
+                        }
+                    });
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
+        }
     }
 }
 </script>
