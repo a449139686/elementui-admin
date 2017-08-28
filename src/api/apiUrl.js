@@ -16,5 +16,14 @@ global.ApiUrl.login = '/admin.api/admin_base/login';
 global.ApiUrl.authCeck = '/admin.api/admin_base/authCheck';
 /** 修改管理员密码接口 */
 global.ApiUrl.updatePassword = '/admin.api/admin_base/updatePassword';
-
+/** 上传图片 */
 global.ApiUrl.uploadFile = '/public/upload/file';
+/** 删除图片 */
+global.ApiUrl.deleteFile = '/public/upload/delete';
+
+/* 好友申请设置列表 */
+global.ApiUrl.friendRequestList = '/admin.api/friend_request/lists';
+/* 好友申请设置添加 */
+global.ApiUrl.friendRequestAdd = '/admin.api/friend_request/add';
+/* 好友申请设置删除 */
+global.ApiUrl.friendRequestDelete = '/admin.api/friend_request/delete';

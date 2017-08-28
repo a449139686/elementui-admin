@@ -1,6 +1,8 @@
 
 var wsServer = 'ws://39.108.134.88:9502';
 
+//var wsServer = 'ws://172.28.128.5:9502';
+
 //var wsServer = 'wss://blog.fastgoo.net/wss';
 
 global.websocket = new WebSocket(wsServer);

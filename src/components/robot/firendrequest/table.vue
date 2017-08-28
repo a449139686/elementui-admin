@@ -5,7 +5,7 @@
         <v-search :SearchData="searchData"></v-search>
     </div>
     <!--表格信息-->
-    <el-table :data="data" border style="width: 100%;" @cell-dblclick="tableDoubleClick" :highlight-current-row="true" v-loading.body="tableLoading" element-loading-text="拼命加载中">
+    <el-table :data="data.items" border style="width: 100%;" @cell-dblclick="tableDoubleClick" :highlight-current-row="true" v-loading.body="tableLoading" element-loading-text="拼命加载中">
         <el-table-column type="expand" v-if="tableDetail">
             <template scope="props">
             <el-form label-position="left" inline class="demo-table-expand">
@@ -31,8 +31,9 @@
         </template>
         </el-table-column>
     </el-table>
-    <div class="pagination" v-show="data.length > 0">
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[20, 40, 50, 100]" :page-size="20" layout="total, sizes, prev, pager, next, jumper" :total="400">
+    <div class="pagination" v-show="data.total_items > 0">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="searchParam.page_size" :current-page="searchParam.page" :page-sizes="[15, 30, 50, 100]" :page-count="data.total_pages" layout="total, sizes, prev, pager, next, jumper"
+          :total="data.total_items">
         </el-pagination>
     </div>
 </div>
@@ -50,9 +51,6 @@ export default {
                     searchType: [{
                         label: '认证备注',
                         value: '1',
-                    }, {
-                        label: '欢迎信息',
-                        value: '2',
                     }],
                     status: [{
                         label: '正常',
@@ -92,9 +90,14 @@ export default {
         VOperate
     },
     created() {
-        console.log(this.data.length);
+        var self = this;
         VueEvent.$on('searchTable', function(searchData) {
-            console.log(searchData);
+            self.searchParam.search_time = searchData.searchDate;
+            self.searchParam.status = searchData.status;
+            self.searchParam.search_type = searchData.searchType;
+            self.searchParam.search_val = searchData.searchVal;
+            console.log(self.searchParam);
+            self.getLists(self.searchParam);
         });
         VueEvent.$on('tableOperateEdit', function(operateData) {
             console.log(operateData);
@@ -102,6 +105,7 @@ export default {
         VueEvent.$on('tableOperateDelete', function(operateData) {
             console.log(operateData);
         });
+        this.getLists(this.searchParam);
     },
     data() {
         return {
@@ -109,30 +113,47 @@ export default {
                 edit: true,
                 delete: true,
             },
-            data: [],
-            cur_page: 1,
-            tableLoading: false
+            data: {},
+            tableLoading: true,
+            searchParam: {
+                page: 1,
+                page_size: 1,
+            },
         }
     },
     computed: {
 
     },
     methods: {
-        setSearchData(searchData) {
-            this.searchData = searchData;
-        },
         tableDoubleClick() {
             alert(1);
         },
         /** 分页栏 */
         handleSizeChange(pageSize) {
-            console.log(pageSize);
+            this.searchParam.page_size = pageSize;
+            this.tableLoading = true;
+            this.getLists(this.searchParam);
         },
 
         handleCurrentChange(val) {
-            this.cur_page = val;
-            this.getData();
-        }
+            this.searchParam.page = val;
+            this.tableLoading = true;
+            this.getLists(this.searchParam);
+        },
+        getLists(search) {
+            var self = this;
+            self.postData(ApiUrl.friendRequestList, search, function(res) {
+                if (res.code == 1) {
+                    self.data = res.data;
+                    self.tableLoading = false;
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
+        },
     }
 }
 </script>

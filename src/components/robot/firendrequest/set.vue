@@ -11,7 +11,7 @@
             <el-input type="textarea" v-model="form.welcome_msg" style="width: 300px;height:70px;"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="handleOnSubmit" style="width:100px;">立即创建</el-button>
+            <el-button type="primary" @click="handleOnSubmit" style="width:100px;" :loading="form.loading">立即创建</el-button>
             <el-button @click="handleOnCancel">取消</el-button>
         </el-form-item>
     </el-form>
@@ -24,18 +24,7 @@ export default {
 
     },
     created() {
-        console.log(this.data.length);
-        VueEvent.$on('searchTable', function(searchData) {
-            console.log(searchData);
-        });
-        VueEvent.$on('tableOperateEdit', function(operateData) {
-            console.log(operateData);
-        });
-        VueEvent.$on('tableOperateDelete', function(operateData) {
-            console.log(operateData);
-        });
 
-        this.getData();
     },
     data() {
         return {
@@ -61,7 +50,26 @@ export default {
     },
     methods: {
         handleOnSubmit() {
+            var self = this;
+            self.loading = true;
+            self.postData(ApiUrl.friendRequestAdd, self.form, function(res) {
+                if (res.code == 1) {
+                    self.loading = false;
+                    self.$message({
+                        message: '添加成功',
+                        type: 'success',
+                        onClose: function() {
+                            VueEvent.$emit('handleOnCancel');
+                        }
+                    });
 
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
         },
         handleOnCancel() {
             VueEvent.$emit('handleOnCancel');
