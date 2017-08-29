@@ -85,7 +85,28 @@ export default {
     },
     methods: {
         handleOnSubmit() {
+            var self = this;
+            self.loading = true;
+            2017
 
+            self.postData(ApiUrl.friendCommandAdd, self.form, function(res) {
+                if (res.code == 1) {
+                    self.loading = false;
+                    self.$message({
+                        message: '添加成功',
+                        type: 'success',
+                        onClose: function() {
+                            VueEvent.$emit('handleOnCancel');
+                        }
+                    });
+
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
         },
         handleOnCancel() {
             VueEvent.$emit('handleOnCancel');

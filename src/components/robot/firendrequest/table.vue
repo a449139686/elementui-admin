@@ -36,6 +36,23 @@
           :total="data.total_items">
         </el-pagination>
     </div>
+    <el-dialog :title="'编辑 id: '+editTable.id" :visible.sync="editTableModal" size="tiny">
+        <el-form :model="editTable" ref="form" label-width="80px" class="demo-ruleForm">
+            <el-form-item label="是否开启">
+                <el-switch on-text="" off-text="" v-model="editTable.status"></el-switch>
+            </el-form-item>
+            <el-form-item label="认证备注">
+                <el-input type="text" placeholder="请输入认证备注" v-model="editTable.auth_key" style="width: 85%"></el-input>
+            </el-form-item>
+            <el-form-item label="欢迎信息">
+                <el-input type="textarea" placeholder="请输入欢迎信息" v-model="editTable.welcome_msg" style="width: 85%;height:70px;"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editTableModal = false">取 消</el-button>
+            <el-button type="primary" @click="handleOnSubmit" :loading="editTableLoading">确认提交</el-button>
+        </div>
+    </el-dialog>
 </div>
 </template>
 
@@ -101,6 +118,8 @@ export default {
         });
         VueEvent.$on('tableOperateEdit', function(operateData) {
             VueEvent.$emit('editSet', operateData);
+            self.editTableModal = true;
+            self.editTable = operateData;
         });
         VueEvent.$on('tableOperateDelete', function(operateData) {
             self.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
@@ -124,6 +143,11 @@ export default {
             searchParam: {
                 page: 1,
                 page_size: 15,
+            },
+            editTableModal: false,
+            editTableLoading: false,
+            editTable: {
+                status: false,
             },
         }
     },
@@ -183,7 +207,28 @@ export default {
                     });
                 }
             });
-        }
+        },
+        handleOnSubmit() {
+            var self = this;
+            self.editTableLoading = true;
+            self.postData(ApiUrl.friendRequestAdd, self.editTable, function(res) {
+                if (res.code == 1) {
+                    self.loading = false;
+                    self.$message({
+                        message: '修改成功',
+                        type: 'success',
+                        onClose: function() {
+                            self.editTableLoading = false;
+                        }
+                    });
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning'
+                    });
+                }
+            });
+        },
     }
 }
 </script>
