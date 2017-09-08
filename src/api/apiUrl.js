@@ -6,6 +6,8 @@ global.ApiSignKey = 'vue-admin@#!';
 
 global.ApiUrl.baseUlr = 'https://admin.fastgoo.net';
 
+//global.ApiUrl.baseUlr = 'http://admin.phalcon.com';
+
 /** 微信扫描登录授权接口 */
 global.ApiUrl.authLogin = '/admin.api/admin_base/authLogin';
 /** 注册账号 */
@@ -34,3 +36,17 @@ global.ApiUrl.friendCommandList = '/admin.api/friend_command/lists';
 global.ApiUrl.friendCommandAdd = '/admin.api/friend_command/add';
 /* 好友指令删除 */
 global.ApiUrl.friendCommandDelete = '/admin.api/friend_command/delete';
+
+/* 群组指令列表 */
+global.ApiUrl.groupCommandList = '/admin.api/group_command/lists';
+/* 群组指令添加 */
+global.ApiUrl.groupCommandAdd = '/admin.api/group_command/add';
+/* 群组指令删除 */
+global.ApiUrl.groupCommandDelete = '/admin.api/group_command/delete';
+
+/* 群组列表 */
+global.ApiUrl.groupListList = '/admin.api/group_list/lists';
+/* 群组添加 */
+global.ApiUrl.groupListAdd = '/admin.api/group_list/add';
+/* 群组删除 */
+global.ApiUrl.groupListDelete = '/admin.api/group_list/delete';

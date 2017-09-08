@@ -33,7 +33,7 @@
         </template>
         </el-table-column>
     </el-table>
-    <div class="pagination" v-show="data.length > 0">
+    <div class="pagination" v-show="data.total_pages > 1">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="cur_page" :page-sizes="[20, 40, 50, 100]" :page-size="20" layout="total, sizes, prev, pager, next, jumper" :total="400">
         </el-pagination>
     </div>
