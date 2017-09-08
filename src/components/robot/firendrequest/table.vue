@@ -31,7 +31,7 @@
         </template>
         </el-table-column>
     </el-table>
-    <div class="pagination" v-show="data.total_items > 0">
+    <div class="pagination" v-show="data.total_pages > 1">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="searchParam.page_size" :current-page="searchParam.page" :page-sizes="[15, 30, 50, 100]" :page-count="data.total_pages" layout="total, sizes, prev, pager, next, jumper"
           :total="data.total_items">
         </el-pagination>
@@ -119,7 +119,7 @@ export default {
         VueEvent.$on('tableOperateEdit', function(operateData) {
             VueEvent.$emit('editSet', operateData);
             self.editTableModal = true;
-            self.editTable = operateData;
+            self.editTable = JSON.parse(JSON.stringify(operateData));
         });
         VueEvent.$on('tableOperateDelete', function(operateData) {
             self.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
@@ -219,12 +219,17 @@ export default {
                         type: 'success',
                         onClose: function() {
                             self.editTableLoading = false;
+                            self.editTableModal = false;
+                            self.getLists(self.searchParam);
                         }
                     });
                 } else {
                     self.$message({
                         message: res.msg,
-                        type: 'warning'
+                        type: 'warning',
+                        onClose: function() {
+                            self.editTableLoading = false;
+                        }
                     });
                 }
             });

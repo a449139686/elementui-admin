@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column prop="type" label="回复类型">
         </el-table-column>
-        <el-table-column prop="reply_content" label="回复内容">
+        <el-table-column prop="reply" label="回复内容">
         </el-table-column>
         <el-table-column prop="status" label="状态">
         </el-table-column>
@@ -33,11 +33,34 @@
         </template>
         </el-table-column>
     </el-table>
-    <div class="pagination" v-show="data.total_items > 0">
+    <div class="pagination" v-show="data.total_pages > 1">
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="searchParam.page_size" :current-page="searchParam.page" :page-sizes="[15, 30, 50, 100]" :page-count="data.total_pages" layout="total, sizes, prev, pager, next, jumper"
           :total="data.total_items">
         </el-pagination>
     </div>
+    <el-dialog :title="'编辑 id: '+editTable.id" :visible.sync="editTableModal" size="tiny">
+        <el-form :model="editTable" ref="form" label-width="80px" class="demo-ruleForm">
+            <el-form-item label="回复指令">
+                <el-input type="text" v-model="editTable.command" placeholder="请输入指令" style="width: 250px;"></el-input>
+            </el-form-item>
+            <el-form-item label="回复类型">
+                <el-select v-model="editTable.type" clearable placeholder="请选择" style="width: 250px;">
+                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否开启" style="margin-top:30px;">
+                <el-switch on-text="" off-text="" v-model="editTable.status"></el-switch>
+            </el-form-item>
+            <el-form-item label="回复内容" style="margin-top:30px;">
+                <el-input type="textarea" v-model="editTable.reply" style="width: 250px;height:70px;"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editTableModal = false">取 消</el-button>
+            <el-button type="primary" @click="handleOnSubmit" :loading="editTableLoading">确认提交</el-button>
+        </div>
+    </el-dialog>
 </div>
 </template>
 
@@ -89,7 +112,7 @@ export default {
                     key: 'type'
                 }, {
                     label: '回复内容',
-                    key: 'reply_content'
+                    key: 'reply'
                 }, {
                     label: '状态',
                     key: 'status'
@@ -118,7 +141,8 @@ export default {
             self.getLists(self.searchParam);
         });
         VueEvent.$on('tableOperateEdit', function(operateData) {
-            VueEvent.$emit('editSet', operateData);
+            self.editTableModal = true;
+            self.editTable = JSON.parse(JSON.stringify(operateData));
         });
         VueEvent.$on('tableOperateDelete', function(operateData) {
             self.$confirm('此操作将删除该条数据, 是否继续?', '提示', {
@@ -143,6 +167,18 @@ export default {
                 page: 1,
                 page_size: 15,
             },
+            editTableModal: false,
+            editTableLoading: false,
+            editTable: {
+                status: false,
+            },
+            options: [{
+                value: '1',
+                label: '文字'
+            }, {
+                value: '2',
+                label: '图片'
+            }],
         }
     },
     computed: {
@@ -201,7 +237,33 @@ export default {
                     });
                 }
             });
-        }
+        },
+        handleOnSubmit() {
+            var self = this;
+            self.editTableLoading = true;
+            self.postData(ApiUrl.friendCommandAdd, self.editTable, function(res) {
+                if (res.code == 1) {
+                    self.loading = false;
+                    self.$message({
+                        message: '修改成功',
+                        type: 'success',
+                        onClose: function() {
+                            self.editTableLoading = false;
+                            self.editTableModal = false;
+                            self.getLists(self.searchParam);
+                        }
+                    });
+                } else {
+                    self.$message({
+                        message: res.msg,
+                        type: 'warning',
+                        onClose: function() {
+                            self.editTableLoading = false;
+                        }
+                    });
+                }
+            });
+        },
     }
 }
 </script>
